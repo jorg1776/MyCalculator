@@ -1,12 +1,8 @@
 package mycalculator;
 
+import viewtypes.StandardView;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 /**
@@ -15,16 +11,25 @@ import javafx.stage.Stage;
  */
 public class MyCalculator extends Application
 {
+    private static Stage calculatorView;
     
     @Override
     public void start(Stage primaryStage)
     {
-        primaryStage.setResizable(false);
-        primaryStage.setTitle("Calculator");
-        primaryStage.setScene(new Scene(CalculatorPane.getPane(), 220, 280));
-        primaryStage.show();
+        calculatorView = primaryStage;
+        calculatorView.setResizable(false);
+        calculatorView.setTitle("Calculator");
+        calculatorView.setScene(new Scene(StandardView.getPane(), 200, 275));
+        calculatorView.show();
     }
 
+    public static void changeView(Scene view)
+    {
+        calculatorView.setResizable(true);
+        calculatorView.setScene(view);
+        calculatorView.setResizable(false);
+    }
+    
     /**
      * @param args the command line arguments
      */
