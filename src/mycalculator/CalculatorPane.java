@@ -19,6 +19,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
 /**
  *
@@ -31,25 +32,25 @@ public class CalculatorPane
     public CalculatorPane()
     {
         windowLayout = new BorderPane();
-        
-        VBox topDisplay = new VBox();
-        topDisplay.getChildren().add(createMenu());
-        
-        TextField output = new TextField();
-        topDisplay.getChildren().add(output);
-        
-        windowLayout.setTop(topDisplay);
-        
+
+        createMenu();
+
+        VBox centerVBox = new VBox();
+        centerVBox.setPadding(new Insets(10,10,10,10));
+
+        createOutputDisplay(centerVBox);
         createButtons();
+
+        windowLayout.setCenter(centerVBox);
     }
-    
-    public static BorderPane getPane() 
+
+    public static BorderPane getPane()
     { 
         new CalculatorPane();
-        return windowLayout; 
+        return windowLayout;
     }
     
-    public MenuBar createMenu()
+    public void createMenu()
     {
         MenuBar options = new MenuBar();
         
@@ -58,10 +59,23 @@ public class CalculatorPane
         standardView.setSelected(true);
         view.getItems().add(standardView);
         options.getMenus().add(view);
-        
-        return options;
+
+        windowLayout.setTop(options);
     }
-    
+
+    private void createOutputDisplay(VBox centerVBox)
+    {
+        TextField output = new TextField("0");
+        output.setPrefHeight(45);
+        output.setAlignment(Pos.CENTER_RIGHT);
+        output.setEditable(false);
+        output.setStyle("-fx-display-caret: false;");
+        output.setFocusTraversable(false);
+        output.setFont(Font.font("", 20));
+
+        centerVBox.getChildren().add(output);
+    }
+
     public void createButtons()
     {
 //        Button btn = new Button();
