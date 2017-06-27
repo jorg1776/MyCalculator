@@ -6,7 +6,6 @@
 package viewtypes;
 
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
@@ -14,22 +13,24 @@ import javafx.scene.layout.VBox;
  *
  * @author gruenewaldjo
  */
-public class ScientificView extends StandardView
+public class ScientificView
 {
+    private static BorderPane windowLayout;
     private String callerClass = "Scientific";
+    public static double windowWidth = 300;
+    public static double windowHeight = 275;
     
     private ScientificView()
     {
         windowLayout = new BorderPane();
 
-        createMenu(callerClass);
+        windowLayout.setTop(MenuDisplay.getMenuDisplay(callerClass));
 
         VBox centerVBox = new VBox();
         centerVBox.setPadding(new Insets(10,10,10,10));
         centerVBox.setSpacing(5);
         
-        createOutputDisplay(centerVBox);
-        createButtons(centerVBox);
+        centerVBox.getChildren().add(OutputDisplay.getOutputDisplay(windowWidth));
 
         windowLayout.setCenter(centerVBox);
     }
@@ -38,10 +39,5 @@ public class ScientificView extends StandardView
     { 
         new ScientificView();
         return windowLayout;
-    }
-    
-    private void createButtons(VBox centerVBox)
-    {
-        centerVBox.getChildren().add(new Button("Scientific"));
     }
 }
