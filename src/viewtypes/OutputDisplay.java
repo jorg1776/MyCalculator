@@ -62,57 +62,38 @@ public class OutputDisplay
         return equationDisplay.getText();
     }
     
-    public static void updateDisplay(String addOn)
+    public static void updateDisplay(String addOn, boolean decreaseSize)
     {
-        StringBuilder newNumber;
-        
-        if(output.getText().equals("0"))
+        if(decreaseSize == true)
         {
-            newNumber = new StringBuilder();
-        }
-        else 
-        {
-            newNumber = new StringBuilder(output.getText());
-        }
-        
-        switch(addOn)
-        {
-                case "1":
-                case "2":
-                case "3":
-                case "4":
-                case "5":
-                case "6":
-                case "7":
-                case "8":
-                case "9":
-                case "0":
-                case ".":
-                    if(newNumber.length() < 17)
-                    {
-                        updateEquation(addOn);
-                    }
-                    break;
-                case "+":
-                    output.setText("0");
-                    updateEquation(" " + addOn + " ");
-                    return;
-        }
-        
-        if(newNumber.length() > 12)
-        {
-            output.setFont(Font.font(17));
+            output.setFont(Font.font(18));
         }
         else
         {
             output.setFont(Font.font(20));
         }
         
-        if(newNumber.length() < 17)
+        StringBuilder display;
+                
+        if(output.getText().equals("0"))
         {
-            newNumber.append(addOn);
+            display = new StringBuilder(addOn);
+        }
+        else
+        {
+            display = new StringBuilder(output.getText()).append(addOn);
         }
         
-        output.setText(newNumber.toString());
+        output.setText(display.toString());
+    }
+    
+    public static String getDisplay()
+    {
+        return output.getText();
+    }
+    
+    public static void clearDisplay()
+    {
+        output.setText(display.toString());
     }
 }
