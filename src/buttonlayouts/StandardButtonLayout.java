@@ -152,12 +152,49 @@ public class StandardButtonLayout
             Button buttonClicked = (Button)event.getSource();
             String buttonText = buttonClicked.getText();
             
-            if(buttonText.equals("="))
-            {
-                operations.StandardOperations.EvaluateExpression(OutputDisplay.getEquation());
-            }
-            
-            OutputDisplay.updateDisplay(buttonText);
+            EvaluateClick(buttonText);
         }
     };
+    
+    private void EvaluateClick(String buttonText)
+    {
+        int displayLength = OutputDisplay.getDisplay().length();
+        
+        if(displayLength < 17)
+        {
+            boolean decreaseSize;
+            
+            if(displayLength > 12)
+            {
+                decreaseSize = true;
+            }
+            else
+            {
+                decreaseSize = false;
+            }
+            
+            switch(buttonText)
+            {
+                    case "1":
+                    case "2":
+                    case "3":
+                    case "4":
+                    case "5":
+                    case "6":
+                    case "7":
+                    case "8":
+                    case "9":
+                    case "0":
+                    case ".":
+                        OutputDisplay.updateEquation(buttonText);
+                        OutputDisplay.updateDisplay(buttonText, decreaseSize);
+                        break;
+                    case "+":
+                        OutputDisplay.updateEquation(" " + buttonText + " ");
+                        
+                        OutputDisplay.updateDisplay("0", decreaseSize);
+                        return;
+            }
+        }
+    }
 }
