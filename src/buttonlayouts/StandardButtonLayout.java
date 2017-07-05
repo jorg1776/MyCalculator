@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import operations.StandardOperations;
 import viewtypes.OutputDisplay;
 
 /**
@@ -156,45 +157,143 @@ public class StandardButtonLayout
         }
     };
     
+    private String storedMNumber = "0";
+    
+    private StringBuilder number = new StringBuilder("0");
+    
     private void EvaluateClick(String buttonText)
     {
-        int displayLength = OutputDisplay.getDisplay().length();
+        int displayLength = number.length();
         
-        if(displayLength < 17)
+        boolean decreaseSize = displayLength > 12;
+
+        switch(buttonText)
         {
-            boolean decreaseSize;
-            
-            if(displayLength > 12)
-            {
-                decreaseSize = true;
-            }
-            else
-            {
-                decreaseSize = false;
-            }
-            
-            switch(buttonText)
-            {
-                    case "1":
-                    case "2":
-                    case "3":
-                    case "4":
-                    case "5":
-                    case "6":
-                    case "7":
-                    case "8":
-                    case "9":
-                    case "0":
-                    case ".":
-                        OutputDisplay.updateEquation(buttonText);
-                        OutputDisplay.updateDisplay(buttonText, decreaseSize);
-                        break;
-                    case "+":
-                        OutputDisplay.updateEquation(" " + buttonText + " ");
-                        
-                        OutputDisplay.updateDisplay("0", decreaseSize);
-                        return;
-            }
+            case "1":
+            case "2":
+            case "3":
+            case "4":
+            case "5":
+            case "6":
+            case "7":
+            case "8":
+            case "9":
+            case "0":
+            case ".":
+                if(displayLength < 17)
+                {
+                    if(number.toString().equals("0"))
+                    {
+                        number = resetString(number, buttonText);
+                    }
+                    else
+                    {
+                        number.append(buttonText);
+                    }
+                    OutputDisplay.updateDisplay(number.toString(), decreaseSize);
+                }
+                break;
+            case "+":
+            case "-":
+            case "*":
+            case "/":
+                OutputDisplay.updateEquation(number + " " + buttonText + " ");
+                number = resetString(number, "0");
+                OutputDisplay.clearDisplay();
+                break;
+            case "1/x":
+                if(!number.toString().equals("0"))
+                {
+                    String reciprocatedNumber = StandardOperations.reciprocate(number.toString());
+                    number = resetString(number, reciprocatedNumber);
+                    OutputDisplay.updateDisplay(number.toString(), decreaseSize);
+                }
+                break;
+            case "\u221A": //square root
+                String reciprocatedNumber = StandardOperations.squareRoot(number.toString());
+                number = resetString(number, reciprocatedNumber);
+                OutputDisplay.updateDisplay(number.toString(), decreaseSize);
+                break;
+            case "+-":
+                if(!number.toString().equals("0"))
+                {
+                    number = flipNumberSign(number);
+                    OutputDisplay.updateDisplay(number.toString(), decreaseSize);
+                }
+                break;
+            //-----------------------------------------------------------------------------------------------------------------------    
+            case "%":
+                OutputDisplay.updateEquation(number + " ");
+                number = resetString(number, StandardOperations.percentage(OutputDisplay.getEquation()));
+                OutputDisplay.updateEquation(number + " ");
+                OutputDisplay.updateDisplay(number.toString(), decreaseSize);
+                break;
+            case "MC":
+                storedMNumber = "0";
+                OutputDisplay.toggleStoredDisplay(false);
+                break;
+            case "MR":
+                number = resetString(number, storedMNumber);
+                OutputDisplay.updateDisplay(number.toString(), decreaseSize);
+                break;
+            case "MS":
+                storedMNumber = number.toString();
+                OutputDisplay.toggleStoredDisplay(true);
+                number = resetString(number, "0");
+                OutputDisplay.clearDisplay();
+                break;
+            case "M+":
+                storedMNumber = StandardOperations.add(number.toString(), storedMNumber);
+                OutputDisplay.toggleStoredDisplay(true);
+                number = resetString(number, "0");
+                OutputDisplay.clearDisplay();
+                break;
+            case "M-":
+                storedMNumber = StandardOperations.subtract(storedMNumber, number.toString());
+                OutputDisplay.toggleStoredDisplay(true);
+                number = resetString(number, "0");
+                OutputDisplay.clearDisplay();
+                break;
+            case "C":
+                number = resetString(number, "0");
+                OutputDisplay.clearDisplay();
+                OutputDisplay.clearEquation();
+                break;
+            case "CE":
+                number = resetString(number, "0");
+                OutputDisplay.clearDisplay();
+                break;
+            case "<-":
+                number.deleteCharAt(number.length() - 1);
+                OutputDisplay.updateDisplay(number.toString(), decreaseSize);
+                break;
+            case "=":
+                OutputDisplay.updateEquation(number.toString());
+                number = resetString(number, StandardOperations.EvaluateExpression(OutputDisplay.getEquation())); //gets the answer
+                OutputDisplay.updateDisplay(number.toString(), false); 
+                OutputDisplay.clearEquation();
+                break;
         }
+    }
+    
+    private StringBuilder resetString(StringBuilder numberBuilder, String number)
+    {
+        numberBuilder.delete(0, numberBuilder.length());
+        numberBuilder.append(number);
+        return numberBuilder;
+    }
+    
+    private StringBuilder flipNumberSign(StringBuilder numberBuilder)
+    {
+        if(!(numberBuilder.charAt(0) == '-'))
+        {
+            numberBuilder.insert(0, "-");
+        }
+        else
+        {
+            numberBuilder.deleteCharAt(0);
+        }
+        
+        return numberBuilder;
     }
 }
