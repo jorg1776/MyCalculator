@@ -22,6 +22,7 @@ public class OutputDisplay
             
     private static TextField output;
     private static Label equationDisplay;
+    private static Label numberStoredToggle;
     
     public OutputDisplay(double windowWidth)
     {
@@ -42,7 +43,12 @@ public class OutputDisplay
         equationDisplay.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
         equationDisplay.setTranslateY(-15);
         
-        outputDisplay.getChildren().addAll(output, equationDisplay);
+        numberStoredToggle = new Label("");
+        numberStoredToggle.setFont(Font.font(11));
+        numberStoredToggle.setTranslateX(-windowWidth/2 + 14);
+        numberStoredToggle.setTranslateY(15);
+        
+        outputDisplay.getChildren().addAll(output, equationDisplay, numberStoredToggle);
     }
     
     public static StackPane getOutputDisplay(double windowWidth)
@@ -55,6 +61,11 @@ public class OutputDisplay
     {
         StringBuilder newEquation = new StringBuilder(equationDisplay.getText()).append(addOn);
         equationDisplay.setText(newEquation.toString());
+    }
+    
+    public static void clearEquation()
+    {
+        equationDisplay.setText("");
     }
     
     public static String getEquation()
@@ -73,18 +84,7 @@ public class OutputDisplay
             output.setFont(Font.font(20));
         }
         
-        StringBuilder display;
-                
-        if(output.getText().equals("0"))
-        {
-            display = new StringBuilder(addOn);
-        }
-        else
-        {
-            display = new StringBuilder(output.getText()).append(addOn);
-        }
-        
-        output.setText(display.toString());
+        output.setText(addOn);
     }
     
     public static String getDisplay()
@@ -94,6 +94,19 @@ public class OutputDisplay
     
     public static void clearDisplay()
     {
-        output.setText(display.toString());
+        output.setFont(Font.font(20));
+        output.setText("0");
+    }
+        
+    public static void toggleStoredDisplay(boolean toggled)
+    {        
+        if(toggled == true)
+        {
+            numberStoredToggle.setText("M");
+        }
+        else
+        {
+            numberStoredToggle.setText("");
+        }
     }
 }
