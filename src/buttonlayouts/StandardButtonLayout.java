@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package buttonlayouts;
 
 import javafx.event.ActionEvent;
@@ -13,32 +8,37 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import operations.StandardOperations;
-import viewtypes.OutputDisplay;
 
-/**
- *
- * @author gruenewaldjo
- */
 public class StandardButtonLayout
 {
     private static VBox standardButtons;
+    private static String viewType;
     
     private StandardButtonLayout()
     {
         standardButtons = new VBox();
-            
-        //---------------useless row-------------------
-        HBox uselessRow = new HBox();
-        uselessRow.setPadding(new Insets(0, 0, 5, 0));
-        uselessRow.setSpacing(5);
+        addStandardButtons();
+    }
+    
+    public static VBox getStandardButtonLayout(String view)
+    {
+        viewType = view;
+        new StandardButtonLayout();
+        return standardButtons;
+    }
+    
+    private void addStandardButtons()
+    {
+        //---------------memory row-------------------
+        HBox memoryRow = new HBox();
+        memoryRow.setPadding(new Insets(0, 0, 5, 0));
+        memoryRow.setSpacing(5);
         
-        addButton("MC", uselessRow);
-        addButton("MR", uselessRow);
-        addButton("MS", uselessRow);
-        addButton("M+", uselessRow);
-        addButton("M-", uselessRow);
-        
-        standardButtons.getChildren().add(uselessRow);
+        addButton("MC", memoryRow);
+        addButton("MR", memoryRow);
+        addButton("MS", memoryRow);
+        addButton("M+", memoryRow);
+        addButton("M-", memoryRow);
         
        //---------------row 1-------------------
         HBox row1 = new HBox();
@@ -51,8 +51,6 @@ public class StandardButtonLayout
         addButton("+-", row1);
         addButton("\u221A", row1);
         
-        standardButtons.getChildren().add(row1);
-        
         //---------------row 2-------------------
         HBox row2 = new HBox();
         row2.setPadding(new Insets(0, 0, 5, 0));
@@ -63,8 +61,6 @@ public class StandardButtonLayout
         addButton("9", row2);
         addButton("/", row2);
         addButton("%", row2);
-        
-        standardButtons.getChildren().add(row2);
         
         //---------------row 3-------------------
         HBox row3 = new HBox();
@@ -77,8 +73,6 @@ public class StandardButtonLayout
         addButton("*", row3);
         addButton("1/x", row3);
         
-        standardButtons.getChildren().add(row3);
-        
         //---------------row 4-------------------
         HBox row4 = new HBox();
         row4.setPadding(new Insets(0, 0, -27, 0));
@@ -90,8 +84,6 @@ public class StandardButtonLayout
         addButton("-", row4);
         addButton("=", row4);
         
-        standardButtons.getChildren().add(row4);
-        
         //---------------row 5-------------------
         HBox row5 = new HBox();
         row5.setPadding(new Insets(0, 0, 0, 0));
@@ -101,13 +93,7 @@ public class StandardButtonLayout
         addButton(".", row5);
         addButton("+", row5);
         
-        standardButtons.getChildren().add(row5);
-    }
-    
-    public static VBox getStandardButtonLayout()
-    {
-        new StandardButtonLayout();
-        return standardButtons;
+        standardButtons.getChildren().addAll(memoryRow, row1, row2, row3, row4, row5);
     }
     
     private void addButton(String text, HBox buttons)
@@ -134,6 +120,11 @@ public class StandardButtonLayout
             case "0":
                 newButton.setPrefSize(72, 27);
                 break;
+            case "%":
+                if(viewType.equals("Scientific"))
+                {
+                    newButton.setDisable(true);
+                }
             default:
                 newButton.setPrefSize(standardButtonWidth, standardButtonHeight);
                 break;
@@ -221,12 +212,15 @@ public class StandardButtonLayout
                     OutputDisplay.updateDisplay(number.toString(), decreaseSize);
                 }
                 break;
-            //-----------------------------------------------------------------------------------------------------------------------    
             case "%":
-                OutputDisplay.updateEquation(number + " ");
-                number = resetString(number, StandardOperations.percentage(OutputDisplay.getEquation()));
-                OutputDisplay.updateEquation(number + " ");
-                OutputDisplay.updateDisplay(number.toString(), decreaseSize);
+                if(OutputDisplay.canFindPercentage())
+                {
+                    OutputDisplay.updateEquation(number + " ");
+                    String updatedEquation = StandardOperations.percentage(OutputDisplay.getEquation());
+                    OutputDisplay.clearEquation();
+                    OutputDisplay.updateEquation(updatedEquation);
+                    OutputDisplay.clearDisplay();
+                }
                 break;
             case "MC":
                 storedMNumber = "0";

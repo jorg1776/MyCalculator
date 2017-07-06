@@ -1,0 +1,4 @@
+.radio-button .dot{
+    -fx-background-radius: 3px;
+    -fx-padding: 3px;
+}
