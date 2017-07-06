@@ -1,23 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package viewtypes;
 
+import buttonlayouts.OutputDisplay;
+import buttonlayouts.MenuDisplay;
+import buttonlayouts.ScientificButtonLayout;
+import buttonlayouts.StandardButtonLayout;
 import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-/**
- *
- * @author gruenewaldjo
- */
 public class ScientificView
 {
     private static BorderPane windowLayout;
     private String callerClass = "Scientific";
-    public static double windowWidth = 300;
+    public static double windowWidth = 400;
     public static double windowHeight = 275;
     
     private ScientificView()
@@ -32,6 +28,11 @@ public class ScientificView
         
         centerVBox.getChildren().add(OutputDisplay.getOutputDisplay(windowWidth));
 
+        HBox buttonArea = new HBox();
+        buttonArea.getChildren().addAll(ScientificButtonLayout.getScientificButtonLayout(), 
+                                        StandardButtonLayout.getStandardButtonLayout("Scientific"));
+        
+        centerVBox.getChildren().add(buttonArea);
         windowLayout.setCenter(centerVBox);
     }
     
