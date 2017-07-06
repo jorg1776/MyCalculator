@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package operations;
 
 import java.util.ArrayList;
@@ -135,17 +130,28 @@ public class StandardOperations
         
         return checkedResult(result);
     }
-    //--------------------------------------------------------------------------------------------------------------------
+    
     public static String percentage(String expression)
     {
-        System.out.println(expression);
         List<String> equation= new ArrayList<String>(Arrays.asList(expression.split(" ")));
         
-        String result = "0";
+        String percentageString = equation.get(equation.size() - 1);
+        String numberString = equation.get(equation.size() - 3);
         
+        float percentage = Float.parseFloat(percentageString);
+        percentage /= 100;
+        float number = Float.parseFloat(numberString);
+        float calculatedPercentage = percentage * number;
+        percentageString = calculatedPercentage + "";
+        equation.set(equation.size() - 1, percentageString);
         
-        System.out.println(result);
-        return result;
+        StringBuilder calculatedEquation = new StringBuilder();
+        for(String value : equation)
+        {
+            calculatedEquation.append(value).append(" ");
+        }
+        
+        return calculatedEquation.toString();
     }
     
     public static String squareRoot(String numberAsString)
