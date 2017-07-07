@@ -1,11 +1,14 @@
 package buttonlayouts;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -62,64 +65,50 @@ public class ScientificButtonLayout
     
     public void addScientificButtons()
     {
-        //---------------row 1-------------------
-        HBox row1 = new HBox();
-        row1.setPadding(new Insets(5, 0, 5, 0));
-        row1.setSpacing(5);
+        GridPane buttons = new GridPane();
+        buttons.setPadding(new Insets(5, 0, 0, 0));
+        buttons.setHgap(5);
+        buttons.setVgap(5);
         
-        addButton("", row1);
-        addButton("Inv", row1);
-        addButton("ln", row1);
-        addButton("(", row1);
-        addButton(")", row1);
+        //---------------row 0-------------------
+        addButton("", buttons, 0, 0);
+        addButton("Inv", buttons, 1, 0);
+        addButton("ln", buttons, 2, 0);
+        addButton("(", buttons, 3, 0);
+        addButton(")", buttons, 4, 0);
+        
+        //---------------row 1-------------------
+        addButton("Int", buttons, 0, 1);
+        addButton("sinh", buttons, 1, 1);
+        addButton("sin", buttons, 2, 1);
+        addButton("x\u00B2", buttons, 3, 1); //x squared
+        addButton("n!", buttons, 4, 1);
         
         //---------------row 2-------------------
-        HBox row2 = new HBox();
-        row2.setPadding(new Insets(0, 0, 5, 0));
-        row2.setSpacing(5);
-        
-        addButton("Int", row2);
-        addButton("sinh", row2);
-        addButton("sin", row2);
-        addButton("x\u00B2", row2); //x squared
-        addButton("n!", row2);
+        addButton("dms", buttons, 0, 2);
+        addButton("cosh", buttons, 1, 2);
+        addButton("cos", buttons, 2, 2);
+        addButton("x\u207F", buttons, 3, 2); //x to the nth power
+        addButton("\u207F\u221Ax", buttons, 4, 2); //nth root
         
         //---------------row 3-------------------
-        HBox row3 = new HBox();
-        row3.setPadding(new Insets(0, 0, 5, 0));
-        row3.setSpacing(5);
-        
-        addButton("dms", row3);
-        addButton("cosh", row3);
-        addButton("cos", row3);
-        addButton("x\u207F", row3); //x to the nth power
-        addButton("\u207F\u221Ax", row3); //nth root
+        addButton("\u03c0", buttons, 0, 3); //pi
+        addButton("tanh", buttons, 1, 3);
+        addButton("tan", buttons, 2, 3);
+        addButton("x\u00B3", buttons, 3, 3); //x cubed
+        addButton("\u00B3\u221Ax", buttons, 4, 3); //cube root of x
         
         //---------------row 4-------------------
-        HBox row4 = new HBox();
-        row4.setPadding(new Insets(0, 0, 5, 0));
-        row4.setSpacing(5);
+        addButton("F-E", buttons, 0, 4);
+        addButton("Exp", buttons, 1, 4);
+        addButton("Mod", buttons, 2, 4);
+        addButton("log", buttons, 3, 4);
+        addButton("10\u207F", buttons, 4, 4); //10 to the power of x
         
-        addButton("\u03c0", row4); //pi
-        addButton("tanh", row4);
-        addButton("tan", row4);
-        addButton("x\u00B3", row4); //x cubed
-        addButton("\u00B3\u221Ax", row4); //cube root of x
-        
-        //---------------row 5-------------------
-        HBox row5 = new HBox();
-        row5.setSpacing(5);
-        
-        addButton("F-E", row5);
-        addButton("Exp", row5);
-        addButton("Mod", row5);
-        addButton("log", row5);
-        addButton("10\u207F", row5); //10 to the power of x
-        
-        scientificButtons.getChildren().addAll(row1, row2, row3, row4, row5);
+        scientificButtons.getChildren().add(buttons);
     }
     
-    public void addButton(String text, HBox buttons)
+    public void addButton(String text, GridPane buttons, int column, int row)
     {
         int standardButtonWidth = 35;
         int standardButtonHeight = 27;
@@ -152,7 +141,7 @@ public class ScientificButtonLayout
                 break;
         }
         
-        buttons.getChildren().add(newButton);
+        buttons.add(newButton, column, row);
     }
     
     private EventHandler<ActionEvent> buttonClick = new EventHandler<ActionEvent>()
@@ -161,9 +150,55 @@ public class ScientificButtonLayout
         public void handle(ActionEvent event)
         {
             Button buttonClicked = (Button)event.getSource();
-            String buttonText = buttonClicked.getText();
             
-            //EvaluateClick(buttonText);
+            evaluateClick(buttonClicked.getText());
         }
     };
+    
+    private void evaluateClick(String buttonText)
+    {
+        switch(buttonText)
+        {
+            case "Inv":
+                invertButtons();
+                break;
+            case "ln":
+                break;
+            case "(":
+                break;
+            case ")":
+                break;
+        }
+    }
+    
+    private boolean inverted = false;
+    private void invertButtons()
+    {
+        GridPane buttons = (GridPane)scientificButtons.getChildren().get(1);
+        
+        if(inverted == false)
+        {
+            changeText(buttons, 2, "e^x");
+            changeText(buttons, 5, "e^x");
+            changeText(buttons, 6, "e^x");
+            changeText(buttons, 7, "e^x");
+            changeText(buttons, 10, "e^x");
+            changeText(buttons, 11, "e^x");
+            changeText(buttons, 12, "e^x");
+            changeText(buttons, 15, "e^x");
+            changeText(buttons, 16, "e^x");
+            changeText(buttons, 17, "e^x");
+        }
+        else
+        {
+            changeText(buttons, 2, "ln");
+        }
+        
+        inverted = !inverted;
+    }
+    
+    private void changeText(GridPane buttons, int index, String text)
+    {
+        ((Button)buttons.getChildren().get(index)).setText(text);
+    }
 }

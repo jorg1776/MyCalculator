@@ -142,9 +142,8 @@ public class StandardButtonLayout
         public void handle(ActionEvent event)
         {
             Button buttonClicked = (Button)event.getSource();
-            String buttonText = buttonClicked.getText();
             
-            EvaluateClick(buttonText);
+            evaluateClick(buttonClicked.getText());
         }
     };
     
@@ -152,7 +151,7 @@ public class StandardButtonLayout
     
     private StringBuilder number = new StringBuilder("0");
     
-    private void EvaluateClick(String buttonText)
+    private void evaluateClick(String buttonText)
     {
         int displayLength = number.length();
         
