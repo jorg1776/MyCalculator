@@ -1,5 +1,7 @@
 package buttonlayouts;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -7,11 +9,13 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import operations.ScientificOperations;
 
 public class ScientificButtonLayout
 {
@@ -59,9 +63,22 @@ public class ScientificButtonLayout
         grads.setFont(Font.font(11));
         
         degreeType.getChildren().addAll(degrees, radians, grads);
+        degreeTypeToggleGroup.selectedToggleProperty().addListener(radioButtonToggle);
         
         scientificButtons.getChildren().add(degreeType);
     }
+    
+    private static String modeSelection = "Degrees";
+    
+    private ChangeListener<Toggle> radioButtonToggle = new ChangeListener<Toggle>()
+    {
+        @Override
+        public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue)
+        {
+            RadioButton selectedType = (RadioButton)newValue.getToggleGroup().getSelectedToggle();
+            modeSelection = selectedType.getText();
+        }
+    };
     
     public void addScientificButtons()
     {
@@ -103,7 +120,7 @@ public class ScientificButtonLayout
         addButton("Exp", buttons, 1, 4);
         addButton("Mod", buttons, 2, 4);
         addButton("log", buttons, 3, 4);
-        addButton("10\u207F", buttons, 4, 4); //10 to the power of x
+        addButton("10\u207F", buttons, 4, 4); //10 to the nth power
         
         scientificButtons.getChildren().add(buttons);
     }
@@ -157,18 +174,94 @@ public class ScientificButtonLayout
     
     private void evaluateClick(String buttonText)
     {
+        String number = OutputDisplay.getDisplay();
+        String result = "0";
+        
         switch(buttonText)
         {
+          //----------logarithmic functions----------
+            case "ln":
+                if(!number.equals("0"))
+                {
+                    result = ScientificOperations.ln(number);
+                    displayResult(result);
+                }
+                break;
+            case "e\u207F": // e ^ x
+                result = ScientificOperations.eToThePowerOf(number);
+                displayResult(result);
+                break;    
+          //----------hyperbolic functions----------
+            case "sinh":
+                result = ScientificOperations.sinh(number);
+                displayResult(result);
+                break;
+            case "sinh\u207B\u00B9": // sinh^-1
+                result = ScientificOperations.inverseSinh(number);
+                displayResult(result);
+                break;
+            case "cosh":
+                result = ScientificOperations.cosh(number);
+                displayResult(result);
+                break;
+            case "cosh\u207B\u00B9": // sinh^-1
+                result = ScientificOperations.inverseCosh(number);
+                displayResult(result);
+                break;  
+          //----------trig functions----------
+            case "sin":
+                result = ScientificOperations.sin(number, modeSelection);
+                displayResult(result);
+                break;
+            case "sin\u207B\u00B9": // sinh^-1
+                result = ScientificOperations.inverseSin(number, modeSelection);
+                displayResult(result);
+                break;
+            case "cos":
+                result = ScientificOperations.cos(number, modeSelection);
+                displayResult(result);
+                break;
+            case "cos\u207B\u00B9": // sinh^-1
+                result = ScientificOperations.inverseCos(number, modeSelection);
+                displayResult(result);
+                break;
+          //----------exponential functions----------
+            case "x\u00B2": // x^2
+                result = ScientificOperations.square(number);
+                displayResult(result);
+                break;
+            case "n!":
+                result = ScientificOperations.factorial(number);
+                displayResult(result);
+                break;
+            case "x\u207F": // x ^ n
+                break;
+          //----------root functions----------
+          //----------other functions----------
+            case "Int":
+                result = ScientificOperations.convertToInt(number);
+                displayResult(result);
+            case "Frac":
+                break;     
+            case "dms":
+                break;
+            case "deg":
+                break;
+          //----------display options----------
             case "Inv":
                 invertButtons();
-                break;
-            case "ln":
                 break;
             case "(":
                 break;
             case ")":
                 break;
         }
+    }
+    
+    private void displayResult(String result)
+    {
+        StandardButtonLayout.updateNumber(result);
+        OutputDisplay.updateDisplay(result, false);
     }
     
     private boolean inverted = false;
@@ -178,27 +271,37 @@ public class ScientificButtonLayout
         
         if(inverted == false)
         {
-            changeText(buttons, 2, "e^x");
-            changeText(buttons, 5, "e^x");
-            changeText(buttons, 6, "e^x");
-            changeText(buttons, 7, "e^x");
-            changeText(buttons, 10, "e^x");
-            changeText(buttons, 11, "e^x");
-            changeText(buttons, 12, "e^x");
-            changeText(buttons, 15, "e^x");
-            changeText(buttons, 16, "e^x");
-            changeText(buttons, 17, "e^x");
+            changeText(buttons, 2, "e\u207F", 12); // ln to e^x
+            changeText(buttons, 5, "Frac", 9.5); // Int to Frac
+            changeText(buttons, 6, "sinh\u207B\u00B9", 8.5); // sinh to sinh^-1
+            changeText(buttons, 7, "sin\u207B\u00B9", 9.5); // sin to sin^-1
+            changeText(buttons, 10, "deg", 10.5); // dms to deg
+            changeText(buttons, 11, "cosh\u207B\u00B9", 7.8); // cosh to cosh^-1
+            changeText(buttons, 12, "cos\u207B\u00B9", 8.5); // cos to cos^-1
+            changeText(buttons, 15, "2*\u03c0", 11); // pi to 2*pi
+            changeText(buttons, 16, "tanh\u207B\u00B9", 8); // tanh to tanh^-1
+            changeText(buttons, 17, "tan\u207B\u00B9", 8.5); // tan to tan^-1
         }
         else
         {
-            changeText(buttons, 2, "ln");
+            changeText(buttons, 2, "ln", 12);
+            changeText(buttons, 5, "Int", 12);
+            changeText(buttons, 6, "sinh", 10);
+            changeText(buttons, 7, "sin", 12);
+            changeText(buttons, 10, "dms", 10);
+            changeText(buttons, 11, "cosh", 9.5);
+            changeText(buttons, 12, "cos", 12);
+            changeText(buttons, 15, "pi", 12);
+            changeText(buttons, 16, "tanh", 10);
+            changeText(buttons, 17, "tan", 12);
         }
         
         inverted = !inverted;
     }
     
-    private void changeText(GridPane buttons, int index, String text)
+    private void changeText(GridPane buttons, int index, String text, double fontSize)
     {
         ((Button)buttons.getChildren().get(index)).setText(text);
+        ((Button)buttons.getChildren().get(index)).setFont(Font.font(fontSize));
     }
 }

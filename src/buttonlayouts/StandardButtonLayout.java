@@ -149,7 +149,12 @@ public class StandardButtonLayout
     
     private String storedMNumber = "0";
     
-    private StringBuilder number = new StringBuilder("0");
+    private static StringBuilder number = new StringBuilder("0");
+    
+    public static void updateNumber(String newNumber)
+    {
+        resetString(number, newNumber);
+    }
     
     private void evaluateClick(String buttonText)
     {
@@ -269,7 +274,7 @@ public class StandardButtonLayout
         }
     }
     
-    private StringBuilder resetString(StringBuilder numberBuilder, String number)
+    private static StringBuilder resetString(StringBuilder numberBuilder, String number)
     {
         numberBuilder.delete(0, numberBuilder.length());
         numberBuilder.append(number);
