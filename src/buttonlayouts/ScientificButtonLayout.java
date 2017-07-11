@@ -2,11 +2,9 @@ package buttonlayouts;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
@@ -180,12 +178,13 @@ public class ScientificButtonLayout
         switch(buttonText)
         {
           //----------logarithmic functions----------
+            case "log":
+                result = ScientificOperations.log(number);
+                displayResult(result);
+                break;
             case "ln":
-                if(!number.equals("0"))
-                {
-                    result = ScientificOperations.ln(number);
-                    displayResult(result);
-                }
+                result = ScientificOperations.ln(number);
+                displayResult(result);
                 break;
             case "e\u207F": // e ^ x
                 result = ScientificOperations.eToThePowerOf(number);
@@ -204,16 +203,24 @@ public class ScientificButtonLayout
                 result = ScientificOperations.cosh(number);
                 displayResult(result);
                 break;
-            case "cosh\u207B\u00B9": // sinh^-1
+            case "cosh\u207B\u00B9": // cosh^-1
                 result = ScientificOperations.inverseCosh(number);
                 displayResult(result);
-                break;  
+                break;
+            case "tanh":
+                result = ScientificOperations.tanh(number);
+                displayResult(result);
+                break;
+            case "tanh\u207B\u00B9": // tanh^-1
+                result = ScientificOperations.inverseTanh(number);
+                displayResult(result);
+                break;
           //----------trig functions----------
             case "sin":
                 result = ScientificOperations.sin(number, modeSelection);
                 displayResult(result);
                 break;
-            case "sin\u207B\u00B9": // sinh^-1
+            case "sin\u207B\u00B9": // sin^-1
                 result = ScientificOperations.inverseSin(number, modeSelection);
                 displayResult(result);
                 break;
@@ -221,7 +228,7 @@ public class ScientificButtonLayout
                 result = ScientificOperations.cos(number, modeSelection);
                 displayResult(result);
                 break;
-            case "cos\u207B\u00B9": // sinh^-1
+            case "cos\u207B\u00B9": // cos^-1
                 result = ScientificOperations.inverseCos(number, modeSelection);
                 displayResult(result);
                 break;
@@ -230,22 +237,53 @@ public class ScientificButtonLayout
                 result = ScientificOperations.square(number);
                 displayResult(result);
                 break;
+            case "x\u00B3": // x^3
+                result = ScientificOperations.cube(number);
+                displayResult(result);
+                break;    
+            case "x\u207F": // x ^ n
+                OutputDisplay.updateEquation(number + " ^ ");
+                displayResult("0");
+                OutputDisplay.clearDisplay();
+                break;
+            case "10\u207F": // 10 ^ n
+                result = ScientificOperations.tenToThePower(number);
+                displayResult(result);
+                break;    
             case "n!":
                 result = ScientificOperations.factorial(number);
                 displayResult(result);
                 break;
-            case "x\u207F": // x ^ n
-                break;
           //----------root functions----------
+            case "\u00B3\u221Ax": // cube root
+                result = ScientificOperations.cubeRoot(number);
+                displayResult(result);
+                break;    
+            case "\u207F\u221Ax": // nth root
+                OutputDisplay.updateEquation(number + " \u207F\u221A ");
+                displayResult("0");
+                OutputDisplay.clearDisplay();
+                break;
           //----------other functions----------
             case "Int":
                 result = ScientificOperations.convertToInt(number);
                 displayResult(result);
             case "Frac":
+                result = ScientificOperations.getFraction(number);
+                displayResult(result);
                 break;     
             case "dms":
                 break;
             case "deg":
+                break;
+            case "Mod":
+                OutputDisplay.updateEquation(number + " % ");
+                displayResult("0");
+                OutputDisplay.clearDisplay();
+                break;
+            case "Exp":
+                break;
+            case "F-E":
                 break;
           //----------display options----------
             case "Inv":
@@ -255,6 +293,12 @@ public class ScientificButtonLayout
                 break;
             case ")":
                 break;
+            case "\u03c0": // pi
+                displayResult(ScientificOperations.getPi());
+                break;
+            case "2*\u03c0": // 2 * pi
+                displayResult(ScientificOperations.getDoublePi());
+                break;    
         }
     }
     
@@ -291,7 +335,7 @@ public class ScientificButtonLayout
             changeText(buttons, 10, "dms", 10);
             changeText(buttons, 11, "cosh", 9.5);
             changeText(buttons, 12, "cos", 12);
-            changeText(buttons, 15, "pi", 12);
+            changeText(buttons, 15, "\u03c0", 12);
             changeText(buttons, 16, "tanh", 10);
             changeText(buttons, 17, "tan", 12);
         }

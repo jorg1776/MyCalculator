@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import operations.ScientificOperations;
 import operations.StandardOperations;
 
 public class StandardButtonLayout
@@ -267,7 +268,15 @@ public class StandardButtonLayout
                 break;
             case "=":
                 OutputDisplay.updateEquation(number.toString());
-                number = resetString(number, StandardOperations.EvaluateExpression(OutputDisplay.getEquation())); //gets the answer
+                switch(viewType)
+                {
+                    case "Standard":
+                        number = resetString(number, StandardOperations.EvaluateExpression(OutputDisplay.getEquation())); //gets the answer
+                        break;
+                    case "Scientific":
+                        number = resetString(number, ScientificOperations.EvaluateExpression(OutputDisplay.getEquation())); //gets the answer
+                        break;
+                }
                 OutputDisplay.updateDisplay(number.toString(), false); 
                 OutputDisplay.clearEquation();
                 break;
