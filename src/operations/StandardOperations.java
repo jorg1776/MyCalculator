@@ -1,13 +1,11 @@
 package operations;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- *
- * @author gruenewaldjo
- */
 public class StandardOperations
 {
     public static String EvaluateExpression(String expression)
@@ -84,51 +82,41 @@ public class StandardOperations
     
     public static String multiply(String firstNumber, String secondNumber)
     {
-        float number1 = Float.parseFloat(firstNumber);
-        float number2 = Float.parseFloat(secondNumber);
+        BigDecimal number1 = BigDecimal.valueOf(Double.parseDouble(firstNumber));
+        BigDecimal number2 = BigDecimal.valueOf(Double.parseDouble(secondNumber));
         
-        float result = number1 * number2;
-        
-        return checkedResult(result);
+        return number1.multiply(number2).stripTrailingZeros().toPlainString();
     }
     
     public static String divide(String firstNumber, String secondNumber)
     {
-        float number1 = Float.parseFloat(firstNumber);
-        float number2 = Float.parseFloat(secondNumber);
+        BigDecimal number1 = BigDecimal.valueOf(Double.parseDouble(firstNumber));
+        BigDecimal number2 = BigDecimal.valueOf(Double.parseDouble(secondNumber));
         
-        float result = number1 / number2;
-        
-        return checkedResult(result);
+        return number1.divide(number2, 10, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString();
     }
     
     public static String add(String firstNumber, String secondNumber)
     {
-        float number1 = Float.parseFloat(firstNumber);
-        float number2 = Float.parseFloat(secondNumber);
+        BigDecimal number1 = BigDecimal.valueOf(Double.parseDouble(firstNumber));
+        BigDecimal number2 = BigDecimal.valueOf(Double.parseDouble(secondNumber));
         
-        float result = number1 + number2;
-        
-        return checkedResult(result);
+        return number1.add(number2).stripTrailingZeros().toPlainString();
     }
     
     public static String subtract(String firstNumber, String secondNumber)
     {
-        float number1 = Float.parseFloat(firstNumber);
-        float number2 = Float.parseFloat(secondNumber);
+        BigDecimal number1 = BigDecimal.valueOf(Double.parseDouble(firstNumber));
+        BigDecimal number2 = BigDecimal.valueOf(Double.parseDouble(secondNumber));
         
-        float result = number1 - number2;
-        
-        return checkedResult(result);
+        return number1.subtract(number2).stripTrailingZeros().toPlainString();
     }
     
     public static String reciprocate(String numberAsString)
     {
-        float number = Float.parseFloat(numberAsString);
+        BigDecimal number = BigDecimal.valueOf(Double.parseDouble(numberAsString));
         
-        float result = 1 / number;
-        
-        return checkedResult(result);
+        return BigDecimal.ONE.divide(number, 10, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString();
     }
     
     public static String percentage(String expression)
@@ -136,13 +124,15 @@ public class StandardOperations
         List<String> equation= new ArrayList<String>(Arrays.asList(expression.split(" ")));
         
         String percentageString = equation.get(equation.size() - 1);
-        String numberString = equation.get(equation.size() - 3);
+        BigDecimal percentage = BigDecimal.valueOf(Double.parseDouble(percentageString));
+        percentage = percentage.divide(new BigDecimal(100));
         
-        float percentage = Float.parseFloat(percentageString);
-        percentage /= 100;
-        float number = Float.parseFloat(numberString);
-        float calculatedPercentage = percentage * number;
-        percentageString = calculatedPercentage + "";
+        String numberString = equation.get(equation.size() - 3);
+        BigDecimal number = BigDecimal.valueOf(Double.parseDouble(numberString));
+        
+        BigDecimal calculatedPercentage = percentage.multiply(number);
+        
+        percentageString = calculatedPercentage.stripTrailingZeros().toPlainString();
         equation.set(equation.size() - 1, percentageString);
         
         StringBuilder calculatedEquation = new StringBuilder();
@@ -156,7 +146,7 @@ public class StandardOperations
     
     public static String squareRoot(String numberAsString)
     {
-        float number = Float.parseFloat(numberAsString);
+        double number = Double.parseDouble(numberAsString);
                 
         if(number < 0)
         {
@@ -164,22 +154,7 @@ public class StandardOperations
         }
         else
         {
-            float result = (float) Math.sqrt(number);
-
-            return checkedResult(result);
-        }
-    }
-    
-    private static String checkedResult(float result)
-    {        
-        if(result == Math.floor(result))
-        {
-            int resultAsInteger = (int)result;
-            return "" + resultAsInteger;
-        }
-        else
-        {
-            return "" + result;
+            return BigDecimal.valueOf(Math.sqrt(number)).setScale(10, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString();
         }
     }
 }

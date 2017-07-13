@@ -71,9 +71,7 @@ public class ScientificOperations
         
         if(number > 0)
         {
-            float result = (float)Math.log10(number);
-
-            return checkedResult(result);
+            return convertResult(Math.log10(number));
         }
         else
         {
@@ -87,8 +85,7 @@ public class ScientificOperations
         
         if(number > 0)
         {
-            float result = (float)Math.log(number);
-            return checkedResult(result);
+            return convertResult(Math.log(number));
         }
         else
         {
@@ -99,34 +96,26 @@ public class ScientificOperations
     public static String eToThePowerOf(String numberAsString)
     {
         double number = Double.parseDouble(numberAsString);
-        float result = (float)Math.pow(Math.E, number);
-        
-        return checkedResult(result);
+        return convertResult(Math.pow(Math.E, number));
     }
     
   //------------------hyperbolic functions------------------
     public static String sinh(String numberAsString)
     {
         double number = Double.parseDouble(numberAsString);
-        float result = (float)Math.sinh(number);
-        
-        return checkedResult(result);
+        return convertResult(Math.sinh(number));
     }
     
     public static String inverseSinh(String numberAsString)
     {
         double number = Double.parseDouble(numberAsString);
-        float result = (float)Math.log(number + Math.sqrt(number * number + 1));
-        
-        return checkedResult(result);
+        return convertResult(Math.log(number + Math.sqrt(number * number + 1)));
     }
     
     public static String cosh(String numberAsString)
     {
         double number = Double.parseDouble(numberAsString);
-        float result = (float)Math.cosh(number);
-        
-        return checkedResult(result);
+        return convertResult(Math.cosh(number));
     }
     
     public static String inverseCosh(String numberAsString)
@@ -134,9 +123,7 @@ public class ScientificOperations
         double number = Double.parseDouble(numberAsString);
         if(number >=1 )
         {
-            float result = (float)Math.log(number + Math.sqrt(number * number - 1));
-
-            return checkedResult(result);
+            return convertResult(Math.log(number + Math.sqrt(number * number - 1)));
         }
         else
         {
@@ -147,9 +134,7 @@ public class ScientificOperations
     public static String tanh(String numberAsString)
     {
         double number = Double.parseDouble(numberAsString);
-        float result = (float)Math.tanh(number);
-        
-        return checkedResult(result);
+        return convertResult(Math.tanh(number));
     }
     
     public static String inverseTanh(String numberAsString)
@@ -157,9 +142,7 @@ public class ScientificOperations
         double number = Double.parseDouble(numberAsString);
         if(number > -1 && number < 1 )
         {
-            float result = (float)(Math.log((1 + number) / (1 - number)))/2;
-
-            return checkedResult(result);
+            return convertResult((Math.log((1 + number) / (1 - number)))/2);
         }
         else
         {
@@ -173,9 +156,7 @@ public class ScientificOperations
         double number = Double.parseDouble(numberAsString);
         number = convertToRadians(number, mode);
         
-        float result = (float)Math.sin(number);
-        
-        return checkedResult(result);
+        return convertResult(Math.sin(number));
     }
     
     public static String inverseSin(String numberAsString, String mode)
@@ -185,9 +166,7 @@ public class ScientificOperations
         
         if(number >= -1 && number <= 1)
         {
-            float result = (float)Math.asin(number);
-
-            return checkedResult(result);
+            return convertResult(Math.asin(number));
         }
         else
         {
@@ -200,9 +179,7 @@ public class ScientificOperations
         double number = Double.parseDouble(numberAsString);
         number = convertToRadians(number, mode);
         
-        float result = (float)Math.cos(number);
-        
-        return checkedResult(result);
+        return convertResult(Math.cos(number));
     }
     
     public static String inverseCos(String numberAsString, String mode)
@@ -212,9 +189,7 @@ public class ScientificOperations
         
         if(number >= -1 && number <= 1)
         {
-            float result = (float)Math.acos(number);
-
-            return checkedResult(result);
+            return convertResult(Math.acos(number));
         }
         else
         {
@@ -227,9 +202,7 @@ public class ScientificOperations
         double number = Double.parseDouble(numberAsString);
         number = convertToRadians(number, mode);
         
-        float result = (float)Math.tan(number);
-        
-        return checkedResult(result);
+        return convertResult(Math.tan(number));
     }
     
     public static String inverseTan(String numberAsString, String mode)
@@ -237,9 +210,7 @@ public class ScientificOperations
         double number = Double.parseDouble(numberAsString);
         number = convertToRadians(number, mode);
         
-        float result = (float)Math.atan(number);
-
-        return checkedResult(result);
+        return convertResult(Math.atan(number));
     }
     
     private static double convertToRadians(double number, String mode)
@@ -250,44 +221,41 @@ public class ScientificOperations
                 number = Math.toRadians(number);
                 break;
             case "Grads":
-                number = number * Math.PI / 200;
+                BigDecimal exactNumber = BigDecimal.valueOf(number);
+                exactNumber = exactNumber.multiply(new BigDecimal(Math.PI));
+                exactNumber = exactNumber.divide(new BigDecimal(200));
+                number = exactNumber.doubleValue();
                 break;
         }
         
         return number;
     }
+    
   //------------------exponential functions------------------
     public static String square(String numberAsString)
     {
-        double number = Double.parseDouble(numberAsString);
-        float result = (float)(number * number);
-        
-        return checkedResult(result);
+        BigDecimal number = BigDecimal.valueOf(Double.parseDouble(numberAsString));
+        return number.pow(2).stripTrailingZeros().toPlainString();
     }
     
     public static String cube(String numberAsString)
     {
-        double number = Double.parseDouble(numberAsString);
-        float result = (float)(number * number * number);
-        
-        return checkedResult(result);
+        BigDecimal number = BigDecimal.valueOf(Double.parseDouble(numberAsString));
+        return number.pow(3).stripTrailingZeros().toPlainString();
     }
     
     public static String exponential(String baseNumberAsString, String exponentNumberAsString)
     {
         double baseNumber = Double.parseDouble(baseNumberAsString);
         double exponentNumber = Double.parseDouble(exponentNumberAsString);
-        float result = (float)Math.pow(baseNumber, exponentNumber);
         
-        return checkedResult(result);
+        return convertResult(Math.pow(baseNumber, exponentNumber));
     }
     
     public static String tenToThePower(String numberAsString)
     {
         double number = Double.parseDouble(numberAsString);
-        float result = (float)Math.pow(10, number);
-        
-        return checkedResult(result);
+        return convertResult(Math.pow(10, number));
     }
     
     public static String factorial(String numberAsString)
@@ -296,103 +264,193 @@ public class ScientificOperations
         
         if(number >= 0 && (number == Math.floor(number)))
         {
-            float result = 1;
+            int result = 1;
             for(int i = (int)number; i > 0; i--)
             {
                 result *= i;
             }
-            return checkedResult(result);
+            return convertResult(result);
         }
         else
         {
             return numberAsString;
         }
-        
     }
     
   //------------------root functions------------------
     public static String cubeRoot(String numberAsString)
     {
         double number = Double.parseDouble(numberAsString);
-        float result = (float)Math.cbrt(number);
-        
-        return checkedResult(result);
+        return convertResult(Math.cbrt(number));
     }
     
     public static String nthRoot(String baseNumberAString, String rootNumberAsString)
     {
         double baseNumber = Double.parseDouble(baseNumberAString);
-        double rootNumber = Double.parseDouble(rootNumberAsString);
+        BigDecimal rootNumber = BigDecimal.valueOf(Double.parseDouble(rootNumberAsString));
+        rootNumber = BigDecimal.ONE.divide(rootNumber, 16, RoundingMode.HALF_UP).stripTrailingZeros();
         
-        float result = (float)Math.pow(baseNumber, 1 / rootNumber);
-        
-        return checkedResult(result);
+        return convertResult(Math.pow(baseNumber, rootNumber.doubleValue()));
     }
     
   //------------------other functions------------------
-    public static String convertToInt(String numberAsString)
+    public static String getInt(String numberAsString)
     {
         double number = Double.parseDouble(numberAsString);
-        int result = (int)Math.floor(number);
-        
-        return result + "";
+        return convertResult(Math.floor(number));
     }
     
     public static String getFraction(String numberAsString)
     {
-        double number = Double.parseDouble(numberAsString);
-        BigDecimal exactNumber = BigDecimal.valueOf(number);
+        BigDecimal exactNumber = BigDecimal.valueOf(Double.parseDouble(numberAsString));
+        BigDecimal exactWholeNumber = exactNumber.setScale(0, RoundingMode.FLOOR);
         
-        double wholeNumber = Math.floor(number);
-        BigDecimal exactWholeNumber = BigDecimal.valueOf(wholeNumber);
-        
-        BigDecimal result = exactNumber.subtract(exactWholeNumber);
-        
-        return result + "";
+        return exactNumber.subtract(exactWholeNumber).toPlainString();
     }
     
     public static String getPi()
     {
-        float pi = (float)Math.PI;
-        return pi + "";
+        return convertResult(Math.PI);
     }
     
     public static String getDoublePi()
     {
-        float pi = (float)Math.PI;
-        return (pi * 2) + "";
+        BigDecimal pi = BigDecimal.valueOf(Math.PI);
+        return pi.multiply(new BigDecimal(2)).stripTrailingZeros().toPlainString();
     }
     
     public static String modulus(String firstNumberAsString, String secondNumberAsString)
     {
-        double firstNumber = Double.parseDouble(firstNumberAsString);
-        BigDecimal exactFirstNumber = BigDecimal.valueOf(firstNumber);
-        double secondNumber = Double.parseDouble(secondNumberAsString);
-        BigDecimal exactSecondNumber = BigDecimal.valueOf(secondNumber);
+        BigDecimal exactFirstNumber = BigDecimal.valueOf(Double.parseDouble(firstNumberAsString));
+        BigDecimal exactSecondNumber = BigDecimal.valueOf(Double.parseDouble(secondNumberAsString));
         
-        double result = firstNumber % secondNumber;
-        BigDecimal exactResult = exactFirstNumber.remainder(exactSecondNumber);
-        
-        if(result == Math.floor(result))
-        {
-            return exactResult.setScale(0, RoundingMode.DOWN) + "";
-        }
-        else
-        {
-            return exactResult + "";
-        }
+       return exactFirstNumber.remainder(exactSecondNumber).stripTrailingZeros().toPlainString();
     }
     
-    private static String checkedResult(float result)
-    {        
-        if(result == Math.floor(result))
+    public static String toDMS(String numberAsString)
+    {
+        BigDecimal decimal = BigDecimal.valueOf(Double.parseDouble(numberAsString));
+        boolean isNegative = false;
+        if(decimal.compareTo(BigDecimal.ZERO) < 0)
         {
-            int resultAsInteger = (int)result;
-            return resultAsInteger + "";
+            isNegative = true;
+            decimal = decimal.multiply(new BigDecimal(-1));
+        }
+        
+        BigDecimal degrees = decimal.setScale(0, RoundingMode.FLOOR).stripTrailingZeros();
+        String degreesAsString = degrees.toPlainString();
+        if(isNegative == true)
+        {
+            degreesAsString = "-" + degreesAsString;
+        }
+        
+        decimal = (decimal.subtract(degrees)).multiply(new BigDecimal(60)).stripTrailingZeros();
+        BigDecimal minutes = decimal.setScale(0, RoundingMode.FLOOR);
+        String minutesAsString = minutes.toPlainString();
+        if(minutes.compareTo(new BigDecimal(10)) < 0)
+        {
+            minutesAsString = "0" + minutesAsString;
+        }
+        
+        decimal = decimal.subtract(minutes);
+        BigDecimal seconds = decimal.multiply(new BigDecimal(60)).stripTrailingZeros();
+        String secondsAsString;
+        if(minutes.compareTo(new BigDecimal(10)) < 0)
+        {
+            secondsAsString = "0" + seconds;
         }
         else
         {
-            return result + "";
+            secondsAsString = seconds.toPlainString();
         }
+        
+        if(secondsAsString.contains("."))
+        {
+            secondsAsString = secondsAsString.replaceAll("[.]", "");
+        }
+        
+        StringBuilder result = new StringBuilder(degreesAsString);
+        if(seconds.compareTo(BigDecimal.ZERO) > 0)
+        {
+            result.append(".").append(minutesAsString).append(secondsAsString);
+        }
+        else if(minutes.compareTo(BigDecimal.ZERO) > 0)
+        {
+            result.append(".").append(minutesAsString);
+        }
+        
+        return result.toString();
+    }
+    
+    public static String toDeg(String numberAsString)
+    {
+        BigDecimal dmsNumber = BigDecimal.valueOf(Double.parseDouble(numberAsString));
+        BigDecimal degrees = dmsNumber.setScale(0, RoundingMode.FLOOR);
+        
+        BigDecimal minSecDecimal = dmsNumber.subtract(degrees);
+        
+        BigDecimal decimal = BigDecimal.ZERO;
+        if(minSecDecimal.compareTo(BigDecimal.ZERO) > 0)
+        {
+            String minSecDecimalAsString = minSecDecimal.toPlainString();
+            minSecDecimalAsString = minSecDecimalAsString.replace("0.", "");
+            
+            BigDecimal minutes; 
+            if(minSecDecimalAsString.length() > 2)
+            {
+                String minutesAsString = minSecDecimalAsString.substring(0, 2);
+                minutes = BigDecimal.valueOf(Double.parseDouble(minutesAsString)).stripTrailingZeros();
+                try
+                {
+                   minutes = minutes.divide(new BigDecimal(60)); 
+                } 
+                catch (ArithmeticException e)
+                {
+                    minutes = minutes.divide(new BigDecimal(60), 10, RoundingMode.HALF_UP);
+                }
+
+                String secondsAsString = minSecDecimalAsString.substring(2, minSecDecimalAsString.length());
+                secondsAsString = "." + secondsAsString;
+                BigDecimal seconds = BigDecimal.valueOf(Double.parseDouble(secondsAsString)).stripTrailingZeros();
+                seconds = seconds.multiply(new BigDecimal(100)).stripTrailingZeros();
+                try
+                {
+                   seconds = seconds.divide(new BigDecimal(3600));
+                } 
+                catch (ArithmeticException e)
+                {
+                    seconds = seconds.divide(new BigDecimal(3600), 10, RoundingMode.HALF_UP);
+                }
+
+                decimal = minutes.add(seconds).stripTrailingZeros();
+            }
+            else
+            {
+                minutes = BigDecimal.valueOf(Double.parseDouble(minSecDecimalAsString)).stripTrailingZeros();
+                if(minSecDecimalAsString.length() < 2)
+                {
+                    minutes = minutes.multiply(BigDecimal.TEN);
+                }
+                
+                try
+                {
+                   minutes = minutes.divide(new BigDecimal(60)); 
+                } 
+                catch (ArithmeticException e)
+                {
+                    minutes = minutes.divide(new BigDecimal(60), 10, RoundingMode.HALF_UP);
+                }
+                decimal = minutes;
+            }
+        }
+        
+        BigDecimal result = degrees.add(decimal);
+        
+        return result.toPlainString();
+    }
+    
+    public static String convertResult(double result)
+    {
+        return BigDecimal.valueOf(result).stripTrailingZeros().toPlainString();
     }
 }
