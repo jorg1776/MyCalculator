@@ -277,7 +277,7 @@ public class StandardButtonLayout
                         number = resetString(number, ScientificOperations.EvaluateExpression(OutputDisplay.getEquation())); //gets the answer
                         break;
                 }
-                OutputDisplay.updateDisplay(number.toString(), false); 
+                OutputDisplay.updateDisplay(number.toString(), (number.toString().length() > 12)); 
                 OutputDisplay.clearEquation();
                 break;
         }

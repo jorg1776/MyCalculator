@@ -266,15 +266,19 @@ public class ScientificButtonLayout
                 break;
           //----------other functions----------
             case "Int":
-                result = ScientificOperations.convertToInt(number);
+                result = ScientificOperations.getInt(number);
                 displayResult(result);
             case "Frac":
                 result = ScientificOperations.getFraction(number);
                 displayResult(result);
                 break;     
             case "dms":
+                result = ScientificOperations.toDMS(number);
+                displayResult(result);
                 break;
             case "deg":
+                result = ScientificOperations.toDeg(number);
+                displayResult(result);
                 break;
             case "Mod":
                 OutputDisplay.updateEquation(number + " % ");
@@ -282,8 +286,10 @@ public class ScientificButtonLayout
                 OutputDisplay.clearDisplay();
                 break;
             case "Exp":
+                
                 break;
             case "F-E":
+                
                 break;
           //----------display options----------
             case "Inv":

@@ -10,10 +10,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 
-/**
- *
- * @author gruenewaldjo
- */
 public class OutputDisplay
 {
     private static StackPane outputDisplay;
