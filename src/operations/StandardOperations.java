@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class StandardOperations
+public final class StandardOperations
 {
-    public static String EvaluateExpression(String expression)
+    public final static String EvaluateExpression(String expression)
     {                
-        List<String> equation= new ArrayList<String>(Arrays.asList(expression.split(" ")));
+        List<String> equation= new ArrayList<>(Arrays.asList(expression.split(" ")));
         
         //checks for multiplication and division
         for(int i = 0; i < equation.size(); i++)
@@ -80,7 +80,7 @@ public class StandardOperations
         return finalResult;
     }
     
-    public static String multiply(String firstNumber, String secondNumber)
+    public final static String multiply(String firstNumber, String secondNumber)
     {
         BigDecimal number1 = BigDecimal.valueOf(Double.parseDouble(firstNumber));
         BigDecimal number2 = BigDecimal.valueOf(Double.parseDouble(secondNumber));
@@ -88,7 +88,7 @@ public class StandardOperations
         return number1.multiply(number2).stripTrailingZeros().toPlainString();
     }
     
-    public static String divide(String firstNumber, String secondNumber)
+    public final static String divide(String firstNumber, String secondNumber)
     {
         BigDecimal number1 = BigDecimal.valueOf(Double.parseDouble(firstNumber));
         BigDecimal number2 = BigDecimal.valueOf(Double.parseDouble(secondNumber));
@@ -96,7 +96,7 @@ public class StandardOperations
         return number1.divide(number2, 10, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString();
     }
     
-    public static String add(String firstNumber, String secondNumber)
+    public final static String add(String firstNumber, String secondNumber)
     {
         BigDecimal number1 = BigDecimal.valueOf(Double.parseDouble(firstNumber));
         BigDecimal number2 = BigDecimal.valueOf(Double.parseDouble(secondNumber));
@@ -104,7 +104,7 @@ public class StandardOperations
         return number1.add(number2).stripTrailingZeros().toPlainString();
     }
     
-    public static String subtract(String firstNumber, String secondNumber)
+    public final static String subtract(String firstNumber, String secondNumber)
     {
         BigDecimal number1 = BigDecimal.valueOf(Double.parseDouble(firstNumber));
         BigDecimal number2 = BigDecimal.valueOf(Double.parseDouble(secondNumber));
@@ -112,14 +112,14 @@ public class StandardOperations
         return number1.subtract(number2).stripTrailingZeros().toPlainString();
     }
     
-    public static String reciprocate(String numberAsString)
+    public final static String reciprocate(String numberAsString)
     {
         BigDecimal number = BigDecimal.valueOf(Double.parseDouble(numberAsString));
         
         return BigDecimal.ONE.divide(number, 10, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString();
     }
     
-    public static String percentage(String expression)
+    public final static String percentage(String expression)
     {
         List<String> equation= new ArrayList<String>(Arrays.asList(expression.split(" ")));
         
@@ -144,7 +144,7 @@ public class StandardOperations
         return calculatedEquation.toString();
     }
     
-    public static String squareRoot(String numberAsString)
+    public final static String squareRoot(String numberAsString)
     {
         double number = Double.parseDouble(numberAsString);
                 

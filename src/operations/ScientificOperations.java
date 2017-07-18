@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ScientificOperations
+public final class ScientificOperations
 {
-    public static String EvaluateExpression(String expression)
+    public final static String EvaluateExpression(String expression)
     {                
-        List<String> equation= new ArrayList<String>(Arrays.asList(expression.split(" ")));
+        List<String> equation= new ArrayList<>(Arrays.asList(expression.split(" ")));
         
         //checks for multiplication and division
         for(int i = 0; i < equation.size(); i++)
@@ -31,17 +31,19 @@ public class ScientificOperations
                     
                     String result = "";
                     
-                    if(value.equals("^"))
+                    switch (value)
                     {
-                        result = exponential(firstNumber, secondNumber);
-                    }
-                    else if(value.equals("%"))
-                    {
-                        result = modulus(firstNumber, secondNumber);
-                    }
-                    else if(value.equals("\u207F\u221A"))
-                    {
-                        result = nthRoot(firstNumber, secondNumber);
+                        case "^":
+                            result = exponential(firstNumber, secondNumber);
+                            break;
+                        case "%":
+                            result = modulus(firstNumber, secondNumber);
+                            break;
+                        case "\u207F\u221A":
+                            result = nthRoot(firstNumber, secondNumber);
+                            break;
+                        default:
+                            break;
                     }
                     equation.set(i -1, result);
                     equation.remove(i);
@@ -65,7 +67,7 @@ public class ScientificOperations
     }
     
   //------------------logarithmic functions------------------
-    public static String log(String numberAsString)
+    public final static String log(String numberAsString)
     {
         double number = Double.parseDouble(numberAsString);
         
@@ -79,7 +81,7 @@ public class ScientificOperations
         }
     }
     
-    public static String ln(String numberAsString)
+    public final static String ln(String numberAsString)
     {
         double number = Double.parseDouble(numberAsString);
         
@@ -93,32 +95,32 @@ public class ScientificOperations
         }
     }
     
-    public static String eToThePowerOf(String numberAsString)
+    public final static String eToThePowerOf(String numberAsString)
     {
         double number = Double.parseDouble(numberAsString);
         return convertResult(Math.pow(Math.E, number));
     }
     
   //------------------hyperbolic functions------------------
-    public static String sinh(String numberAsString)
+    public final static String sinh(String numberAsString)
     {
         double number = Double.parseDouble(numberAsString);
         return convertResult(Math.sinh(number));
     }
     
-    public static String inverseSinh(String numberAsString)
+    public final static String inverseSinh(String numberAsString)
     {
         double number = Double.parseDouble(numberAsString);
         return convertResult(Math.log(number + Math.sqrt(number * number + 1)));
     }
     
-    public static String cosh(String numberAsString)
+    public final static String cosh(String numberAsString)
     {
         double number = Double.parseDouble(numberAsString);
         return convertResult(Math.cosh(number));
     }
     
-    public static String inverseCosh(String numberAsString)
+    public final static String inverseCosh(String numberAsString)
     {
         double number = Double.parseDouble(numberAsString);
         if(number >=1 )
@@ -131,13 +133,13 @@ public class ScientificOperations
         }
     }
     
-    public static String tanh(String numberAsString)
+    public final static String tanh(String numberAsString)
     {
         double number = Double.parseDouble(numberAsString);
         return convertResult(Math.tanh(number));
     }
     
-    public static String inverseTanh(String numberAsString)
+    public final static String inverseTanh(String numberAsString)
     {
         double number = Double.parseDouble(numberAsString);
         if(number > -1 && number < 1 )
@@ -151,7 +153,7 @@ public class ScientificOperations
     }
     
   //------------------trig functions------------------
-    public static String sin(String numberAsString, String mode)
+    public final static String sin(String numberAsString, String mode)
     {
         double number = Double.parseDouble(numberAsString);
         number = convertToRadians(number, mode);
@@ -159,7 +161,7 @@ public class ScientificOperations
         return convertResult(Math.sin(number));
     }
     
-    public static String inverseSin(String numberAsString, String mode)
+    public final static String inverseSin(String numberAsString, String mode)
     {
         double number = Double.parseDouble(numberAsString);
         number = convertToRadians(number, mode);
@@ -174,7 +176,7 @@ public class ScientificOperations
         }
     }
     
-    public static String cos(String numberAsString, String mode)
+    public final static String cos(String numberAsString, String mode)
     {
         double number = Double.parseDouble(numberAsString);
         number = convertToRadians(number, mode);
@@ -182,7 +184,7 @@ public class ScientificOperations
         return convertResult(Math.cos(number));
     }
     
-    public static String inverseCos(String numberAsString, String mode)
+    public final static String inverseCos(String numberAsString, String mode)
     {
         double number = Double.parseDouble(numberAsString);
         number = convertToRadians(number, mode);
@@ -197,7 +199,7 @@ public class ScientificOperations
         }
     }
     
-    public static String tan(String numberAsString, String mode)
+    public final static String tan(String numberAsString, String mode)
     {
         double number = Double.parseDouble(numberAsString);
         number = convertToRadians(number, mode);
@@ -205,7 +207,7 @@ public class ScientificOperations
         return convertResult(Math.tan(number));
     }
     
-    public static String inverseTan(String numberAsString, String mode)
+    public final static String inverseTan(String numberAsString, String mode)
     {
         double number = Double.parseDouble(numberAsString);
         number = convertToRadians(number, mode);
@@ -232,19 +234,19 @@ public class ScientificOperations
     }
     
   //------------------exponential functions------------------
-    public static String square(String numberAsString)
+    public final static String square(String numberAsString)
     {
         BigDecimal number = BigDecimal.valueOf(Double.parseDouble(numberAsString));
         return number.pow(2).stripTrailingZeros().toPlainString();
     }
     
-    public static String cube(String numberAsString)
+    public final static String cube(String numberAsString)
     {
         BigDecimal number = BigDecimal.valueOf(Double.parseDouble(numberAsString));
         return number.pow(3).stripTrailingZeros().toPlainString();
     }
     
-    public static String exponential(String baseNumberAsString, String exponentNumberAsString)
+    public final static String exponential(String baseNumberAsString, String exponentNumberAsString)
     {
         double baseNumber = Double.parseDouble(baseNumberAsString);
         double exponentNumber = Double.parseDouble(exponentNumberAsString);
@@ -252,13 +254,13 @@ public class ScientificOperations
         return convertResult(Math.pow(baseNumber, exponentNumber));
     }
     
-    public static String tenToThePower(String numberAsString)
+    public final static String tenToThePower(String numberAsString)
     {
         double number = Double.parseDouble(numberAsString);
         return convertResult(Math.pow(10, number));
     }
     
-    public static String factorial(String numberAsString)
+    public final static String factorial(String numberAsString)
     {
         double number = Double.parseDouble(numberAsString);
         
@@ -278,13 +280,13 @@ public class ScientificOperations
     }
     
   //------------------root functions------------------
-    public static String cubeRoot(String numberAsString)
+    public final static String cubeRoot(String numberAsString)
     {
         double number = Double.parseDouble(numberAsString);
         return convertResult(Math.cbrt(number));
     }
     
-    public static String nthRoot(String baseNumberAString, String rootNumberAsString)
+    public final static String nthRoot(String baseNumberAString, String rootNumberAsString)
     {
         double baseNumber = Double.parseDouble(baseNumberAString);
         BigDecimal rootNumber = BigDecimal.valueOf(Double.parseDouble(rootNumberAsString));
@@ -294,13 +296,13 @@ public class ScientificOperations
     }
     
   //------------------other functions------------------
-    public static String getInt(String numberAsString)
+    public final static String getInt(String numberAsString)
     {
         double number = Double.parseDouble(numberAsString);
         return convertResult(Math.floor(number));
     }
     
-    public static String getFraction(String numberAsString)
+    public final static String getFraction(String numberAsString)
     {
         BigDecimal exactNumber = BigDecimal.valueOf(Double.parseDouble(numberAsString));
         BigDecimal exactWholeNumber = exactNumber.setScale(0, RoundingMode.FLOOR);
@@ -308,18 +310,18 @@ public class ScientificOperations
         return exactNumber.subtract(exactWholeNumber).toPlainString();
     }
     
-    public static String getPi()
+    public final static String getPi()
     {
         return convertResult(Math.PI);
     }
     
-    public static String getDoublePi()
+    public final static String getDoublePi()
     {
         BigDecimal pi = BigDecimal.valueOf(Math.PI);
         return pi.multiply(new BigDecimal(2)).stripTrailingZeros().toPlainString();
     }
     
-    public static String modulus(String firstNumberAsString, String secondNumberAsString)
+    public final static String modulus(String firstNumberAsString, String secondNumberAsString)
     {
         BigDecimal exactFirstNumber = BigDecimal.valueOf(Double.parseDouble(firstNumberAsString));
         BigDecimal exactSecondNumber = BigDecimal.valueOf(Double.parseDouble(secondNumberAsString));
@@ -327,7 +329,7 @@ public class ScientificOperations
        return exactFirstNumber.remainder(exactSecondNumber).stripTrailingZeros().toPlainString();
     }
     
-    public static String toDMS(String numberAsString)
+    public final static String toDMS(String numberAsString)
     {
         BigDecimal decimal = BigDecimal.valueOf(Double.parseDouble(numberAsString));
         boolean isNegative = false;
@@ -382,7 +384,7 @@ public class ScientificOperations
         return result.toString();
     }
     
-    public static String toDeg(String numberAsString)
+    public final static String toDeg(String numberAsString)
     {
         BigDecimal dmsNumber = BigDecimal.valueOf(Double.parseDouble(numberAsString));
         BigDecimal degrees = dmsNumber.setScale(0, RoundingMode.FLOOR);
@@ -449,7 +451,7 @@ public class ScientificOperations
         return result.toPlainString();
     }
     
-    public static String convertResult(double result)
+    public final static String convertResult(double result)
     {
         return BigDecimal.valueOf(result).stripTrailingZeros().toPlainString();
     }
