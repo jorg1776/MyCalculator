@@ -9,17 +9,17 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class ScientificView
+public final class ScientificView
 {
+    private static boolean initialized;
     private static BorderPane windowLayout;
-    private String callerClass = "Scientific";
+    private final String callerClass = "Scientific";
     public static double windowWidth = 400;
     public static double windowHeight = 275;
     
     private ScientificView()
     {
         windowLayout = new BorderPane();
-
         windowLayout.setTop(MenuDisplay.getMenuDisplay(callerClass));
 
         VBox centerVBox = new VBox();
@@ -34,11 +34,13 @@ public class ScientificView
         
         centerVBox.getChildren().add(buttonArea);
         windowLayout.setCenter(centerVBox);
+        initialized = true;
     }
     
-    public static BorderPane getPane()
+    public final static BorderPane getPane()
     { 
         new ScientificView();
+        
         return windowLayout;
     }
 }
