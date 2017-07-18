@@ -2,22 +2,16 @@ package mycalculator;
 
 import viewtypes.StandardView;
 import javafx.application.Application;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-/**
- *
- * @author gruenewaldjo
- */
-public class MyCalculator extends Application
+public final class MyCalculator extends Application
 {
     private static Stage calculatorView;
     private static double windowWidth;
     
     @Override
-    public void start(Stage primaryStage)
+    public final void start(Stage primaryStage)
     {
         calculatorView = primaryStage;
         calculatorView.setResizable(false);
@@ -26,17 +20,14 @@ public class MyCalculator extends Application
         calculatorView.show();
     }
 
-    public static void changeView(Scene view)
+    public final static void changeView(Scene view)
     {
         calculatorView.setResizable(true);
         calculatorView.setScene(view);
         calculatorView.setResizable(false);
     }
     
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args)
+    public final static void main(String[] args)
     {
         launch(args);
     }
