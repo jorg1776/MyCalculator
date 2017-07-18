@@ -1,10 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package buttonlayouts;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -15,11 +16,7 @@ import javafx.scene.control.ToggleGroup;
 import viewtypes.ScientificView;
 import viewtypes.StandardView;
 
-/**
- *
- * @author gruenewaldjo
- */
-public class MenuDisplay
+public final class MenuDisplay
 {
     private static MenuBar options;
     
@@ -31,11 +28,15 @@ public class MenuDisplay
         ToggleGroup calculatorType = new ToggleGroup();
         addMenuItem("Standard", calculatorType, view, callerClass);
         addMenuItem("Scientific", calculatorType, view, callerClass);
+        
+        Menu help = new Menu("Help");
+        ToggleGroup helpToggle = new ToggleGroup();
+        addMenuItem("Help", helpToggle, help, callerClass);
 
-        options.getMenus().add(view);
+        options.getMenus().addAll(view, help);
     }
     
-    public static MenuBar getMenuDisplay(String callerClass)
+    public final static MenuBar getMenuDisplay(String callerClass)
     {
         new MenuDisplay(callerClass);
         return options;
@@ -56,22 +57,31 @@ public class MenuDisplay
     
     private EventHandler<ActionEvent> toggleView(ToggleGroup menuToggleGroup, RadioMenuItem item)
     {
-        return new EventHandler<ActionEvent>()
+        return (ActionEvent event) ->
         {
-            @Override
-            public void handle(ActionEvent event)
+            switch(item.getText())
             {
-                switch(item.getText())
-                {
-                    case "Standard": 
-                        mycalculator.MyCalculator.changeView(new Scene(StandardView.getPane(), StandardView.windowWidth, StandardView.windowHeight));
-                        break;
-                    case "Scientific": 
-                        mycalculator.MyCalculator.changeView(new Scene(ScientificView.getPane(), ScientificView.windowWidth, ScientificView.windowHeight));
-                        break;
-                    default: 
-                        System.out.println("Something didn't get toggled properly");
-                }
+                case "Standard":
+                    mycalculator.MyCalculator.changeView(new Scene(StandardView.getPane(), StandardView.windowWidth, StandardView.windowHeight));
+                    break;
+                case "Scientific":
+                    mycalculator.MyCalculator.changeView(new Scene(ScientificView.getPane(), ScientificView.windowWidth, ScientificView.windowHeight));
+                    break;
+                case "Help":
+                    if(Desktop.isDesktopSupported())
+                    {
+                        try
+                        {
+                            Desktop.getDesktop().browse(new URI("http://www.digitalcitizen.life/windows-calculator-tool-geek-you"));
+                        } catch (URISyntaxException | IOException ex)
+                        {
+                            Logger.getLogger(MenuDisplay.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        item.setSelected(false);
+                    }
+                    break;
+                default:
+                    System.out.println("Something didn't get toggled properly");
             }
         };
     }

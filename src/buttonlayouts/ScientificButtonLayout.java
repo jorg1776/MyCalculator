@@ -15,8 +15,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import operations.ScientificOperations;
 
-public class ScientificButtonLayout
+public final class ScientificButtonLayout
 {
+    private static boolean initialized;
     private static VBox scientificButtons;
     
     private ScientificButtonLayout()
@@ -26,15 +27,21 @@ public class ScientificButtonLayout
         
         addDegreeTypeSelectionBox();
         addScientificButtons();
+        
+        initialized = true;
     }
     
-    public static VBox getScientificButtonLayout()
+    public final static VBox getScientificButtonLayout()
     {
-        new ScientificButtonLayout();
+        if(initialized == false)
+        {
+            new ScientificButtonLayout();
+        }
+        
         return scientificButtons;
     }
     
-    public void addDegreeTypeSelectionBox()
+    private void addDegreeTypeSelectionBox()
     {
         HBox degreeType = new HBox();
         degreeType.setStyle("-fx-padding: 5;" + 
@@ -68,7 +75,7 @@ public class ScientificButtonLayout
     
     private static String modeSelection = "Degrees";
     
-    private ChangeListener<Toggle> radioButtonToggle = new ChangeListener<Toggle>()
+    private final ChangeListener<Toggle> radioButtonToggle = new ChangeListener<Toggle>()
     {
         @Override
         public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue)
@@ -78,7 +85,7 @@ public class ScientificButtonLayout
         }
     };
     
-    public void addScientificButtons()
+    private void addScientificButtons()
     {
         GridPane buttons = new GridPane();
         buttons.setPadding(new Insets(5, 0, 0, 0));
@@ -123,7 +130,7 @@ public class ScientificButtonLayout
         scientificButtons.getChildren().add(buttons);
     }
     
-    public void addButton(String text, GridPane buttons, int column, int row)
+    private void addButton(String text, GridPane buttons, int column, int row)
     {
         int standardButtonWidth = 35;
         int standardButtonHeight = 27;
@@ -159,15 +166,11 @@ public class ScientificButtonLayout
         buttons.add(newButton, column, row);
     }
     
-    private EventHandler<ActionEvent> buttonClick = new EventHandler<ActionEvent>()
+    private final EventHandler<ActionEvent> buttonClick = (ActionEvent event) ->
     {
-        @Override
-        public void handle(ActionEvent event)
-        {
-            Button buttonClicked = (Button)event.getSource();
-            
-            evaluateClick(buttonClicked.getText());
-        }
+        Button buttonClicked = (Button)event.getSource();
+        
+        evaluateClick(buttonClicked.getText());
     };
     
     private void evaluateClick(String buttonText)
@@ -296,8 +299,10 @@ public class ScientificButtonLayout
                 invertButtons();
                 break;
             case "(":
+                
                 break;
             case ")":
+                
                 break;
             case "\u03c0": // pi
                 displayResult(ScientificOperations.getPi());
@@ -305,6 +310,9 @@ public class ScientificButtonLayout
             case "2*\u03c0": // 2 * pi
                 displayResult(ScientificOperations.getDoublePi());
                 break;    
+            default:
+                System.out.println("A scientific operation didn't get processed");
+                break;
         }
     }
     

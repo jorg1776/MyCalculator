@@ -5,13 +5,15 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import operations.ScientificOperations;
 import operations.StandardOperations;
 
-public class StandardButtonLayout
+public final class StandardButtonLayout
 {
+    private static boolean initialized;
     private static VBox standardButtons;
     private static String viewType;
     
@@ -19,12 +21,20 @@ public class StandardButtonLayout
     {
         standardButtons = new VBox();
         addStandardButtons();
+        initialized = true;
     }
     
-    public static VBox getStandardButtonLayout(String view)
+    public final static VBox getStandardButtonLayout(String view)
     {
         viewType = view;
-        new StandardButtonLayout();
+        
+        if(initialized == false)
+        {
+            new StandardButtonLayout();
+            System.out.println("Creating new standard button layout");
+        }
+        
+        disableButtons(view);
         return standardButtons;
     }
     
@@ -121,11 +131,6 @@ public class StandardButtonLayout
             case "0":
                 newButton.setPrefSize(72, 27);
                 break;
-            case "%":
-                if(viewType.equals("Scientific"))
-                {
-                    newButton.setDisable(true);
-                }
             default:
                 newButton.setPrefSize(standardButtonWidth, standardButtonHeight);
                 break;
@@ -137,22 +142,18 @@ public class StandardButtonLayout
         buttons.getChildren().add(newButton);
     }
     
-    private EventHandler<ActionEvent> buttonClick = new EventHandler<ActionEvent>()
+    private final EventHandler<ActionEvent> buttonClick = (ActionEvent event) ->
     {
-        @Override
-        public void handle(ActionEvent event)
-        {
-            Button buttonClicked = (Button)event.getSource();
-            
-            evaluateClick(buttonClicked.getText());
-        }
+        Button buttonClicked = (Button)event.getSource();
+        
+        evaluateClick(buttonClicked.getText());
     };
     
     private String storedMNumber = "0";
     
     private static StringBuilder number = new StringBuilder("0");
     
-    public static void updateNumber(String newNumber)
+    public final static void updateNumber(String newNumber)
     {
         resetString(number, newNumber);
     }
@@ -280,6 +281,9 @@ public class StandardButtonLayout
                 OutputDisplay.updateDisplay(number.toString(), (number.toString().length() > 12)); 
                 OutputDisplay.clearEquation();
                 break;
+            default:
+                System.out.println("A standard operation didn't get processed");
+                break;
         }
     }
     
@@ -302,5 +306,28 @@ public class StandardButtonLayout
         }
         
         return numberBuilder;
+    }
+    
+    private static void enableButtons()
+    {
+       for(int i = 0; i < standardButtons.getChildren().size(); i++)
+        {
+            for(int j = 0; j < ((Pane)standardButtons.getChildren().get(i)).getChildren().size(); j++)
+            {
+                ((Pane)standardButtons.getChildren().get(i)).getChildren().get(j).setDisable(false);
+            }
+        } 
+    }
+    
+    public static void disableButtons(String view)
+    {
+        enableButtons();
+        
+        switch(view)
+        {
+            case "Scientific":
+                ((HBox)standardButtons.getChildren().get(2)).getChildren().get(4).setDisable(true);
+                break;
+        }
     }
 }

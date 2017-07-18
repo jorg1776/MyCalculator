@@ -10,7 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 
-public class OutputDisplay
+public final class OutputDisplay
 {
     private static StackPane outputDisplay;
             
@@ -18,7 +18,7 @@ public class OutputDisplay
     private static Label equationDisplay;
     private static Label numberStoredToggle;
     
-    public OutputDisplay(double windowWidth)
+    private OutputDisplay(double windowWidth)
     {
         outputDisplay = new StackPane();
         
@@ -45,44 +45,37 @@ public class OutputDisplay
         outputDisplay.getChildren().addAll(output, equationDisplay, numberStoredToggle);
     }
     
-    public static StackPane getOutputDisplay(double windowWidth)
+    public final static StackPane getOutputDisplay(double windowWidth)
     {
         new OutputDisplay(windowWidth);
         return outputDisplay;
     }
     
-    public static void updateEquation(String addOn)
+    public final static void updateEquation(String addOn)
     {
         StringBuilder newEquation = new StringBuilder(equationDisplay.getText()).append(addOn);
         equationDisplay.setText(newEquation.toString());
     }
     
-    public static void clearEquation()
+    public final static void clearEquation()
     {
         equationDisplay.setText("");
     }
     
-    public static String getEquation()
+    public final static String getEquation()
     {
         return equationDisplay.getText();
     }
     
-    public static boolean canFindPercentage() //for checking if percentage is applicable
+    public final static boolean canFindPercentage() //for checking if percentage is applicable
     {
         String expression = getEquation();
-        List<String> equation= new ArrayList<String>(Arrays.asList(expression.split(" ")));
+        List<String> equation= new ArrayList<>(Arrays.asList(expression.split(" ")));
         
-        if(equation.contains("*") || equation.contains("/") || equation.contains("+") || equation.contains("-"))
-        {
-            return true;
-        }
-        else 
-        {
-            return false;
-        }
+        return equation.contains("*") || equation.contains("/") || equation.contains("+") || equation.contains("-");
     }
     
-    public static void updateDisplay(String addOn, boolean decreaseSize)
+    public final static void updateDisplay(String addOn, boolean decreaseSize)
     {
         if(decreaseSize == true)
         {
@@ -96,18 +89,18 @@ public class OutputDisplay
         output.setText(addOn);
     }
     
-    public static String getDisplay()
+    public final static String getDisplay()
     {
         return output.getText();
     }
     
-    public static void clearDisplay()
+    public final static void clearDisplay()
     {
         output.setFont(Font.font(20));
         output.setText("0");
     }
         
-    public static void toggleStoredDisplay(boolean toggled)
+    public final static void toggleStoredDisplay(boolean toggled)
     {        
         if(toggled == true)
         {
